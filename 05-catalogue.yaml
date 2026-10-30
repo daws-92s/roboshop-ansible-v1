@@ -77,5 +77,5 @@
 
   - name: load the products
     shell: mongosh --host "{{ mongodb_host }}" < /app/db/master-data.js
-    when: product_count.stdout == 0
+    when: product_count.stdout | int == 0
 
