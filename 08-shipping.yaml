@@ -63,10 +63,20 @@
       dest: /app
       remote_src: yes
 
+  - name: mvn version without JAVA_HOME
+    command: mvn --version
+    args:
+      chdir: /app
+    register: mvn_default
+    changed_when: false
+
+  - name: print mvn version without JAVA_HOME
+    debug:
+      msg: "{{ mvn_default.stdout_lines }}"
+
   - name: install dependencies
     command: mvn clean package
     args:
      chdir: /app
     environment:
       JAVA_HOME: "{{ java25.stdout | dirname | dirname  }}"
-      MAVEN_OPTS: "-Djdk.tls.namedGroups=\"secp256r1,secp384r1\""
