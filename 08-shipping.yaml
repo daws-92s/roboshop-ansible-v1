@@ -10,24 +10,24 @@
       name:
       - maven
       - java-25-openjdk-devel
-      - maven-openjdk25
+      - maven-openjdk25 # installing this so that we no need to set JAVA_HOME again
       state: present
 
-  - name: find java25 path
-    shell: readlink -f $(ls /usr/lib/jvm/java-25-openjdk*/bin/java | head -1)
-    register: java25
+  # - name: find java25 path
+  #   shell: readlink -f $(ls /usr/lib/jvm/java-25-openjdk*/bin/java | head -1)
+  #   register: java25
 
-  - name: print the output
-    debug:
-      msg: "{{ java25 }}"
+  # - name: print the output
+  #   debug:
+  #     msg: "{{ java25 }}"
 
-  - name: make java25 as default
-    command: alternatives --set java {{ java25.stdout }}
+  # - name: make java25 as default
+  #   command: alternatives --set java {{ java25.stdout }}
 
-  - name: set JAVA_HOME
-    copy:
-      content: "export JAVA_HOME={{ java25.stdout | dirname | dirname  }}"
-      dest: /etc/profile.d/java.sh
+  # - name: set JAVA_HOME
+  #   copy:
+  #     content: "export JAVA_HOME={{ java25.stdout | dirname | dirname  }}"
+  #     dest: /etc/profile.d/java.sh
 
   - name: create roboshop system user
     user:
@@ -69,7 +69,6 @@
     args:
       chdir: /app
     register: mvn_default
-    changed_when: false
 
   - name: print mvn version without JAVA_HOME
     debug:
@@ -79,5 +78,5 @@
     command: mvn clean package
     args:
      chdir: /app
-    environment:
-      JAVA_HOME: "{{ java25.stdout | dirname | dirname  }}"
+    # environment:
+    #   JAVA_HOME: "{{ java25.stdout | dirname | dirname  }}"
