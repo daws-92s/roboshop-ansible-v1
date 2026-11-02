@@ -34,12 +34,12 @@
       state: absent
     loop: "{{ directory_contents.files }}"
 
-  - name: download payment application
+  - name: download frontend application
     get_url:
       url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
       dest: /tmp/frontend.zip
 
-  - name: unzip payment
+  - name: unzip frontend
     unarchive:
       src: /tmp/frontend.zip
       dest: /usr/share/nginx/html/
@@ -47,7 +47,7 @@
 
   - name: copy roboshop config
     template:
-      src: frontend.conf.j2
+      src: roboshop.conf.j2
       dest: /etc/nginx/default.d/roboshop.conf
    
   - name: restart frontend
