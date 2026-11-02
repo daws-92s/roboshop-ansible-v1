@@ -74,7 +74,7 @@
     debug:
       msg: "{{ mvn_default.stdout_lines }}"
 
-  - name: install dependencies
+  - name: build shipping
     command: mvn clean package
     args:
      chdir: /app
