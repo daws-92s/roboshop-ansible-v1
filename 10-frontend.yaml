@@ -33,3 +33,24 @@
       path: "{{ item.path }}"
       state: absent
     loop: "{{ directory_contents.files }}"
+
+  - name: download payment application
+    get_url:
+      url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
+      dest: /tmp/frontend.zip
+
+  - name: unzip payment
+    unarchive:
+      src: /tmp/frontend.zip
+      dest: /usr/share/nginx/html/
+      remote_src: yes
+
+  - name: copy roboshop config
+    template:
+      src: frontend.conf.j2
+      dest: /etc/nginx/default.d/roboshop.conf
+   
+  - name: restart frontend
+    service:
+      name: nginx
+      state: restarted
